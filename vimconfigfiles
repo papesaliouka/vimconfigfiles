@@ -1,0 +1,108 @@
+    syntax on
+set exrc
+set tabstop=4 softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set relativenumber
+set nohlsearch
+set hidden
+set nu
+set nowrap
+set nobackup
+set undodir=~/.vim/undodir
+set undofile
+set incsearch
+set termguicolors
+set scrolloff=8
+set noshowmode
+set signcolumn=yes
+set guicursor
+set expandtab
+set noerrorbells
+set noswapfile
+set colorcolumn=80
+
+set termguicolors
+
+
+let g:solarized_termtrans=1
+colorscheme solarized8_flat
+
+
+call plug#begin('~/.vim/plugged')
+Plug 'pangloss/vim-javascript'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'junegunn/fzf.vim'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'frazrepo/vim-rainbow'
+Plug 'tpope/vim-fugitive'
+Plug 'chun-yang/auto-pairs'
+Plug 'altercation/solarized'
+Plug 'othree/html5.vim'
+Plug 'overcache/NeoSolarized'
+call plug#end()
+
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
+
+
+function! ShowDocIfNoDiagnostic(timer_id)
+  if (coc#float#has_float() == 0 && CocHasProvider('hover') == 1)
+    silent call CocActionAsync('doHover')
+  endif
+endfunction
+
+function! s:show_hover_doc()
+  call timer_start(500, 'ShowDocIfNoDiagnostic')
+endfunction
+
+autocmd CursorHoldI * :call <SID>show_hover_doc()
+autocmd CursorHold * :call <SID>show_hover_doc()
+
+
+let g:airline_powerline_fonts = 1
+
+let g:rainbow_active = 0
+
+
+
+
+
+
+let mapleader = " "
+nnoremap <leader>h : wincmd h <CR>
+nnoremap <leader>j : wincmd j <CR>
+nnoremap <leader>k : wincmd k <CR>
+nnoremap <leader>l : wincmd l <CR>
+nnoremap <leader>u : UndotreeShow <CR>
+nnoremap <leader>gf :diffget//3<CR>
+nnoremap <leader>gh :diffget//2<CR>
+nnoremap <leader>gc :C<CR>
+nnoremap <leader>pv : wincmd v<bar> :Ex <bar> :vertical resize 30 <CR>
+nnoremap <leader>ps :Rg<SPACE>
+nnoremap <leader>pf :GFiles<CR>
+nnoremap <leader>pb :Buffers<CR>
+nnoremap <leader><CR> :so ~/.vimrc<CR>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> K :call CocAction('doHover')<CR>
+nnoremap <leader>\  : vertical resize 80 <CR>
